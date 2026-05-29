@@ -21,8 +21,10 @@ jobs:
           docker volume prune -f
 
     - name: Pull Docker Images and Package
+      env:
+        DOCKER_IMAGES: ${{ github.event.inputs.docker_images }}
       run: |
-        images="${{ github.event.inputs.docker_images }}"
+        images="$DOCKER_IMAGES"
         IFS=',' read -r -a image_array <<< "$images"
         for image in "${image_array[@]}"; do
           docker pull "${image}" --platform "linux/amd64"
